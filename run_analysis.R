@@ -1,14 +1,20 @@
+# You should create one R script called run_analysis.R that does the following. => this file
+# Merges the training and the test sets to create one data set. => in function mergeData() 
+# Extracts only the measurements on the mean and standard deviation for each measurement. => filtered with grep string pattern in readData()
+# Uses descriptive activity names to name the activities in the data set => addActivity() funcion pulls from activity_labels.txt file
+# Appropriately labels the data set with descriptive activity names.  => addActivity() funcion pulls from activity_labels.txt file
+# Creates a second, independent tidy data set with the average of each variable for each activity and each subject. => tidy.txt file
 
 # main wrapper function used for program control. 
 # Called from the Script Execution section at the bottom of the script.
 # Create a tidy data set and save it on to the file name passed in by the main call
 mainCreateFile <- function(fname, fnameraw) {
-  #call functions
+  #main call functions 
   tidy_data <- tidyData(mergeLabeledData())
   
-  #get rid of padded spaces from activity lables
-  library(stringr)
-  tidy_data[,"Activity"] <- str_trim(tidy_data[,"Activity"])
+  #   #get rid of padded spaces from activity lables. no longer needed
+  #   library(stringr)
+  #   tidy_data[,"Activity"] <- str_trim(tidy_data[,"Activity"])
   
   #output data to filename inputed to this function
   #write.table(tidy_data, fname)
@@ -20,7 +26,6 @@ mainCreateFile <- function(fname, fnameraw) {
 mergeLabeledData <- function() {
   addActivity(mergeData())
 }
-
 
 # Merge train and test data sets
 # and tidy up names with ProperCasing
@@ -55,7 +60,7 @@ addActivity <- function(data,fnameraw) {
   data_labeled <- merge(data, activity_labels)
   #write out raw data
   #fnameraw
-  write.table(data_labeled, "raw_data.txt")
+  write.table(data_labeled, "samsung_raw.txt")
   #return merged data
   data_labeled
 }
@@ -111,14 +116,14 @@ tidyData <- function(labeled_data) {
 }
 
 #script exection.....
-print("Creating tidy dataset as ak_tidy.txt")
+print("Creating tidy dataset as samsung_tidy.txt")
 print("data description: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones")
 print("data source: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip")
 print("Assumes Working directory is \"UCI HAR Dataset\"")
 print("run with: source(\"run_analysis.R\")")
 print("start mainCreateFile")
 #the folling is the main call of the script
-mainCreateFile("tidy.txt","rawdata.txt")
+mainCreateFile("samsung_tidy.txt","samsung_raw.txt")
 print("stop mainCreateFile")
-print("note: you can load data with read.table(\"tidy.txt\")")
+print("note: you can load data with read.table(\"samsung_tidy.txt\")")
 
